@@ -109,17 +109,19 @@ mysqli_close($link);
         .main-div h2{
             font-size: 2rem;
             text-transform: uppercase;
-            color: #2F4F4F;
+            color: #21117a;
             font-weight: 900;
+            letter-spacing: 1px;
             display: flex;
             align-items: center;
-                     justify-content: center;
+           justify-content: center;
+
         }
 
         .main-div label{
             font-size: 1.2rem;
             text-transform: capitalize;
-            color: #787878;
+            color: #21117a;
 
         }
 
@@ -127,7 +129,7 @@ mysqli_close($link);
             padding: .5rem;
             width: 100%;
             background: transparent;
-            border: .1rem solid #787878;
+            border: .1rem solid #11117a;
             border-radius: 1rem;
             margin: .5rem 0;
             font-size: 1rem;
@@ -139,17 +141,39 @@ mysqli_close($link);
         }
 
         #btn{
-            background-color: royalblue;
+            background-color: #21117a;
             text-transform: uppercase;
             color: #fff;
             font-weight: 700;
             letter-spacing: .1rem;
         }
 
+        header{
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #D5DEE7 0%, #E8EBF2 50%, #E2E7ED 100%), linear-gradient(to bottom, rgba(0,0,0,0.02) 50%, rgba(255,255,255,0.02) 61%, rgba(0,0,0,0.02) 73%), linear-gradient(33deg, rgba(255,255,255,0.20) 0%, rgba(0,0,0,0.20) 100%);
+ background-blend-mode: normal,color-burn;
+ box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+ position: fixed;
+ width: 100%;
+ z-index: 1;
+ height: 3rem;
+        }
+
+        header i{
+            font-size: 2.5rem;
+            position: relative;
+          
+            left: 3rem; 
+            color: #21117a;       }
+
 
     </style>
 </head>
 <body>
+
+     <header><div><a href="../dashboard-page/dashboard.php"><i class="fa-solid fa-house"></a></div></i></header>
+
     <div class="main-div">
     <h2>Submit Form</h2>
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
@@ -174,6 +198,11 @@ mysqli_close($link);
         <input type="reset" id="btn" value="Reset">
     </form>
 </div>
+
+
+
+  <!-- font awesome link -->
+    <script src="https://kit.fontawesome.com/5a1798d707.js" crossorigin="anonymous"></script>
 
 </body>
 </html>

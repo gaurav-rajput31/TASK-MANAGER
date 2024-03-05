@@ -78,7 +78,7 @@
                     // Attempt to execute the prepared statement
                     if(mysqli_stmt_execute($stmt)){
                         // Redirect to login page
-                        header("location: ../dashboard-page/dashboard.php");
+                        header("location: ../index.php");
                     } else{
                         echo "Oops! Something went wrong. Please try again later.";
                     }
@@ -168,9 +168,15 @@
          }
 
 
+header{
+    background-color: red;
+}
+
     </style>
 </head>
 <body>
+ <header><div><i class="fa-solid fa-house"></div></i></header>
+
     <div class="wrapper">
         <h2>Sign&nbsp;Up</h2>
         <!-- <p>Please fill this form to create an account.</p> -->
@@ -196,6 +202,13 @@
             </div>
             <p>Already have an account? <a href="../index.php">Login here</a>.</p>
         </form>
-    </div>    
+    </div>  
+
+
+    <!-- font awesome link -->
+    <script src="https://kit.fontawesome.com/5a1798d707.js" crossorigin="anonymous"></script>
+      
 </body>
+
+
 </html>

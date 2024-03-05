@@ -3,10 +3,12 @@
 // Include database configuration
 include '../config/config.php'; 
 
-// SQL query to select deadline, S_number, taskName, and description columns
-$sql = "SELECT  * FROM submit";
 
- 
+
+
+
+// SQL query to select all columns from the submit table
+$sql = "SELECT * FROM submit";
 
 // Execute the query
 $result = mysqli_query($link, $sql);
@@ -14,29 +16,84 @@ $result = mysqli_query($link, $sql);
 // Check if the query was successful
 if ($result) {
     // Fetch associative array
-        $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
     
     // Count the number of rows in the array
-    $totalTask = count($rows);
+    $totalTasks = count($rows);
+
+
+    while ($row = mysqli_fetch_assoc($result)) {
+      $formatted_date = date("d/m/Y", strtotime($row['date_column']));
+      
+  }
 
 
 
 
 
-     foreach ($rows as $row) {
-        $S_number = $row['S_number']; // Retrieve the value of S_number
-        $taskName = $row['taskName']; // Retrieve the value of taskName
-        $description = $row['description']; // Retrieve the value of description
+
+
+
+
+
+
+
+    
+    
+    // Loop through each task
+    foreach ($rows as $row) {
+        $S_number = $row['S_number'];
+        $taskName = $row['taskName']; 
+        $description = $row['description'];
         $level = $row['level'];
         $deadline = $row['deadline'];
-
-        }
-
-
-
+        $attachment = $row['attachment'];
+        $totalTask = $row['S_number'];
+        
+        // Display task information or perform other operations
+        //echo "S_number: $S_number <br>";
+       // echo "Task Name: $taskName <br>";
+        //echo "Description: $description <br>";
+       // echo "Level: $level <br>";
+        //echo "Deadline: $deadline <br>";
+        //echo "Attachment: $attachment <br><br>";
+    }
 } else {
-    // Handle the case where the query fails
-    echo "Error: " . mysqli_error($connection);
+    // Error message if the query fails
+    echo "Error: " . mysqli_error($link);
+}
+
+// Function to edit a task
+function editTask($S_number, $taskName, $description, $deadline, $attachment, $level) {
+    global $link;
+    $sql = "UPDATE submit SET taskName='$taskName', description='$description', deadline='$deadline', attachment='$attachment', level='$level' WHERE S_number=$S_number";
+    if (mysqli_query($link, $sql)) {
+        return "Task updated successfully";
+    } else {
+        return "Error updating task: " . mysqli_error($link);
+    }
+}
+
+// Function to delete a task
+function deleteTask($S_number) {
+    global $link;
+    $sql = "DELETE FROM submit WHERE S_number=$S_number";
+    if (mysqli_query($link, $sql)) {
+        return "Task deleted successfully";
+    } else {
+        return "Error deleting task: " . mysqli_error($link);
+    }
+}
+
+// Function to mark a task as completed
+function markTaskCompleted($S_number) {
+    global $link;
+    $sql = "UPDATE submit SET completed=1 WHERE S_number=$S_number";
+    if (mysqli_query($link, $sql)) {
+        return "Task marked as completed";
+    } else {
+        return "Error marking task as completed: " . mysqli_error($link);
+    }
 }
 
 // Close database connection
@@ -72,7 +129,7 @@ mysqli_close($link);
                 <header id="header">
                     <div class="top-header">
                         <span class="top-head">Task Manager Dashboard</span>
-                        <span id="profile" class=" "><a  href="../profile/user-profile.php"><i class="fa-solid fa-right-to-bracket"></i></a></span>
+                        <span id="profile" class=" "><a  href="../profile/user-profile.php"><i class="fa-regular fa-circle-user"></i></i></a></span>
                        
                     </div>
                 </header>
@@ -96,40 +153,56 @@ mysqli_close($link);
 
 
                                      <div class="main-task-div row" id="main-task-div">
-                                    <div class="total-task task col-3">
+                                    <div class="total-task task box col-3">
                                       <h2>TOTAL TASK</h2>
                                       <p><?php echo $totalTask ?></p>
                                     </div>
-                                    <div class="complete-task task col-3">
+                                    <div class="complete-task task box col-3">
                                         <h2>COMPLETE TASK</h2>
                                         <p><?php echo $completeTask ?></p>
 
                                     </div>
-                                    <div class="pandding-task task col-3">
+                                    <div class="pandding-task task box col-3">
                                         <h2>PENDING TASK</h2>
                                         <p><?php echo $pendingTask ?></p>
                                     </div>
                                 </div>
 
 
-                                <div id="myDiv" class="add-task">
+                                <div id="myDiv" class="add-task box ">
+                                   
                                 <h1>Add Your Task</h1>
                                 <a href="../submit-task/submit.php">
                                 <div class=" add-task-logo">
-                                    <h1><i class="fa-solid fa-plus"></i></h1>
+                                    <h2><i class="fa-solid fa-plus"></i></h2>
                                     <span>Add New Task</span>
                                 </div></a>
+                            
 
 
                                 </div>
 
-                            <div class="first-task">
-                                              <h5><?php echo $taskName ?></h5>
-                                              <p><?php echo $description ?></p>
+                            <div class="first-task box">
+                               
+
+
+                                              <h1>Your Last Task Here</h1>
+                                             <p> Task Name:-     
+                                              <label><?php echo $taskName ?></label></p>
+                                           <p>   Description:-
+                                              <label><?php echo $description ?></label></p>
                             
-                                                  
-                            <p><?php echo $level ?></p>
-                               <p><?php echo $deadline ?></p>
+                                              <p>Level:-    
+                                              <label><?php echo $level ?></label></p>
+                                              <p>Deadline:-
+                                             <label><?php echo  $GLOBALS["date_only"]; ?></label></p>
+                                             <p>Attachment:-
+                                             <label><?php echo $attachment; ?></label></p>
+                                             <p><a href="#">Edit</a>&nbsp;
+                                                <a href="#">Delete</a>&nbsp;
+                                                <a href="#">Mark</a>
+
+
                               
                           
 
@@ -138,7 +211,7 @@ mysqli_close($link);
 
 
 
-                        <div class="side-container sidebar">
+                        <div class="side-container sidebar box">
                             <div class="top-side-header sidebar-heading">
                                 <h1>THIS IS SIDEBAR</h1>
                                 <nav class="navbar navbar-light   justify-content-end">
@@ -155,31 +228,30 @@ mysqli_close($link);
                              <table class="table table-striped table-hover" id="taskTable">
                                   <thead>
                                     <tr class="table-primary">
-                                      <th scope="col">S. No.</th>
-                                      <th scope="col">Mark</th>
+                                      <th scope="col">Id</th>
                                       <th scope="col">Task Name</th>
+                                      <th scope="col">Mark As</th>
                                       <th scope="col">Edit Task</th>
                                       <th scope="col">Delete Task</th>
-                                      <th scope="col">Update Task</th>
+                                      <th scope="col">View Task</th>
                                       <th scope="col">Create Date</th>
                                     </tr>
                                   </thead>
                           <tbody>
                             <?php
-                             foreach($rows as $row){
-                                echo "<tr>";
-                                echo "<td>".$row['S_number']."</td>";
-                                echo "<td>Mark</td>";
-                                echo "<td>".$row['taskName']."</td>";
-                                echo "<td>edite</td>";
-                                echo "<td>delete</td>";;
-                                echo "<td>update</td>";
-                                echo "<td>date</td>";
-                            
-                              
+                             foreach($rows as $row) {
+                                    echo "<tr>";
+                                    echo "<td>".$row['S_number']."</td>";
+                                    echo "<td>".$row['taskName']."</td>";
+                                    echo "<td><a href='../mark/mark.php?id=".$row['S_number']."'>Mark</a></td>";
+                                    echo "<td><a href='../edit/edit.php?id=".$row['S_number']."'>Edit</a></td>";
+                                    echo "<td><a href='../delete/delete.php?id=".$row['S_number']."'>Delete</a></td>";
+                                    echo "<td><a href='../task-view/view.php?id=".$row['S_number']."'>View</a></td>"; 
+                                   echo "<td>".($row['deadline'] ?? 'N/A')."</td>";
 
+                                    echo "</tr>";
+                                }
 
-                             }
                                 ?>   
                           </tbody>
   
